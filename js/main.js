@@ -79,7 +79,7 @@ $(document).ready(function() {
 
   $(function() {
     typed.typed({
-      strings: ["Videomaker", "Filmmaker", "Social Media"],
+      strings: ["Videomaker", "Filmmaker", "Social Media", "Gestor de Tráfego"],
       typeSpeed: 100,
       loop: true,
     });
