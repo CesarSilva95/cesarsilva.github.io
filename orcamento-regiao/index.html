@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cesar Silva | Filmmaker & Storymaker</title>
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --text-color: #f1f1f1;
+            --text-muted: #aaa;
+            --accent-color: #d4af37; /* Tom de dourado elegante */
+            --accent-hover: #f3c63e;
+            --border-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(15, 15, 15, 0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('hero-bg.jpg') no-repeat center center/cover;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .hero h1 span {
+            color: var(--accent-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--accent-color);
+            color: #000;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s, transform 0.2s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 100px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        section h2 span {
+            color: var(--accent-color);
+        }
+
+        /* Sobre Mim */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 30px;
+        }
+
+        .about-text {
+            max-width: 800px;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* Portfólio / Vídeos */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .portfolio-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .portfolio-info {
+            padding: 20px;
+        }
+
+        .portfolio-info h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .portfolio-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Planos e Valores */
+        .pricing-section {
+            background-color: #141414;
+        }
+
+        .pricing-category {
+            margin-bottom: 60px;
+        }
+
+        .pricing-category h3 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pricing-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 2rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .pricing-note {
+            text-align: center;
+            margin-top: 40px;
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Contato */
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #090909;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media(max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            nav ul {
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">Cesar Silva</a>
+        <nav>
+            <ul>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#portfolio">Portfólio</a></li>
+                <li><a href="#pricing">Planos</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Cesar Silva <span>Filmes</span></h1>
+        <p>Filmmaker, Videomaker & Storymaker em Bariri e região</p>
+        <a href="#contact" class="btn">Solicitar Orçamento</a>
+    </section>
+
+    <section id="about">
+        <h2>Quem <span>sou eu</span></h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Especialista em capturar momentos únicos e transformá-los em histórias inesquecíveis. Atuando com produção audiovisual de alta qualidade, focando em narrativas que emocionam e valorizam cada detalhe do seu evento ou projeto.</p>
+            </div>
+            <!-- Círculos de eventos removidos conforme solicitado -->
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <h2>Meu <span>Portfólio</span></h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-card">
+                <div class="video-container">[Vídeo Horizontal]</div>
+                <div class="portfolio-info">
+                    <h3>Casamento Exemplo</h3>
+                    <p>Resumo cinematográfico do grande dia.</p>
+                    <span class="tag">Horizontal</span>
+                </div>
+            </div>
+            <div class="portfolio-card">
+                <div class="video-container">[Vídeo Vertical]</div>
+                <div class="portfolio-info">
+                    <h3>Reels / Stories</h3>
+                    <p>Dinâmico e ideal para redes sociais.</p>
+                    <span class="tag">Vertical</span>
+                </div>
+            </div>
+            <div class="portfolio-card">
+                <div class="video-container">[Vídeo Corporativo]</div>
+                <div class="portfolio-info">
+                    <h3>Empresarial & Drone</h3>
+                    <p>Capturas aéreas e institucionais.</p>
+                    <span class="tag">Horizontal</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing-section">
+        <h2>Planos e <span>Valores</span></h2>
+        
+        <!-- Categoria Storymaker -->
+        <div class="pricing-category">
+            <h3>Storymaker</h3>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div>
+                        <h4>Plano I</h4>
+                        <div class="price">R$ 1.000,00</div>
+                    </div>
+                    <a href="#contact" class="btn">Escolher</a>
+                </div>
+                <div class="pricing-card">
+                    <div>
+                        <h4>Plano II</h4>
+                        <div class="price">R$ 1.200,00</div>
+                    </div>
+                    <a href="#contact" class="btn">Escolher</a>
+                </div>
+                <div class="pricing-card">
+                    <div>
+                        <h4>Plano III</h4>
+                        <div class="price">R$ 1.500,00</div>
+                    </div>
+                    <a href="#contact" class="btn">Escolher</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria Filme -->
+        <div class="pricing-category">
+            <h3>Filme</h3>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div>
+                        <h4>Básico</h4>
+                        <div class="price">R$ 2.299,99</div>
+                    </div>
+                    <a href="#contact" class="btn">Escolher</a>
+                </div>
+                <div class="pricing-card">
+                    <div>
+                        <h4>Essencial</h4>
+                        <div class="price">R$ 2.999,99</div>
+                    </div>
+                    <a href="#contact" class="btn">Escolher</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-note">
+            * Consulte custos para eventos nas demais regiões.
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Entre em <span>Contato</span></h2>
+        <div class="contact-content">
+            <p>Vamos conversar sobre o seu projeto? Entre em contato diretamente pelo WhatsApp para verificar datas disponíveis e agendar.</p>
+            <a href="https://wa.me/5514981087903" target="_blank" class="btn">Falar no WhatsApp</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Cesar Silva Filmes. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
