@@ -137,6 +137,22 @@ td.num{font-variant-numeric:tabular-nums;text-align:center}
 .recado{font-style:italic;color:var(--ink-soft);max-width:22em}
 @media (max-width:520px){.tiles{grid-template-columns:1fr 1fr}}
 
+/* Música de fundo */
+.music{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:10;width:52px;height:52px;border-radius:50%;border:1px solid var(--gold-light);background:var(--paper);color:var(--gold-deep);box-shadow:0 8px 22px -10px rgba(138,106,40,.7);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.music svg{width:22px;height:22px}
+.music.playing svg{animation:pulse 1.6s ease-in-out infinite}
+.music .off{display:none}.music:not(.playing) .on{display:none}.music:not(.playing) .off{display:block}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@media (prefers-reduced-motion:reduce){.music.playing svg{animation:none}}
+
+/* Mural de recados */
+.mural-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.recado-card{background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:10px;position:relative}
+.recado-card::before{content:"“";position:absolute;top:-6px;left:12px;font-family:var(--f-body);font-size:3rem;line-height:1;color:var(--gold-light)}
+.recado-card p{white-space:pre-line;font-style:italic;font-size:1.02rem;margin:0;padding-top:8px}
+.recado-card span{font-family:var(--f-cap);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep)}
+.mural-intro{text-align:center;color:var(--ink-soft);font-style:italic;margin:-6px 0 18px}
+
 .rays{transform-origin:130px 70px;animation:glow 6s ease-in-out infinite}
 @keyframes glow{0%,100%{opacity:.55}50%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.rays{animation:none}}
@@ -268,7 +284,7 @@ td.num{font-variant-numeric:tabular-nums;text-align:center}
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
     Como chegar
   </a>
-  <p class="note">É um churrasco comunitário: cada família leva uma bebida ou um prato para partilhar.</p>
+  <p class="note">Leve seu kit churrasco e sua bebida.</p>
 </section>
 
 <section aria-labelledby="h-rsvp">
@@ -301,12 +317,18 @@ td.num{font-variant-numeric:tabular-nums;text-align:center}
     </div>
     <p class="err" id="err" hidden></p>
     <button class="submit" type="submit">Enviar confirmação pelo WhatsApp</button>
-    <p class="hint">Ao tocar no botão, o WhatsApp abre com sua mensagem pronta. É só enviar.</p>
+    <p class="hint">Ao tocar no botão, o WhatsApp abre com sua mensagem pronta. É só enviar. Seu recado pode aparecer no mural do site.</p>
   </form>
   <div class="done" id="done" hidden>
     <p>Sua mensagem está pronta no WhatsApp. Se não abriu, <a id="wa-fallback" href="#" target="_blank" rel="noopener">toque aqui</a> ou envie para <strong id="wa-num"></strong>.</p>
     <button type="button" class="btn-link" id="again">Fazer outra confirmação</button>
   </div>
+</section>
+
+<section id="mural" hidden aria-labelledby="h-mural">
+  <h2 id="h-mural">Recados para a Laura</h2>
+  <p class="mural-intro">Carinhos e bênçãos deixados pela família e pelos amigos.</p>
+  <div class="mural-list" id="mural-list"></div>
 </section>
 
 <footer>Com carinho e fé,<br><span id="sign"></span><small>11 · 10 · 2026</small></footer>
@@ -341,6 +363,11 @@ td.num{font-variant-numeric:tabular-nums;text-align:center}
 </section>
 </main>
 
+<audio id="bgm" src="musica.mp3" loop preload="auto"></audio>
+<button type="button" class="music" id="musicBtn" hidden aria-label="Ligar ou desligar a música">
+  <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+  <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path d="M3 3l18 18"/></svg>
+</button>
 <script>
 /* ===== Dados do convite — edite aqui ===== */
 const CONVITE = {
@@ -349,7 +376,22 @@ const CONVITE = {
   madrinha: "Thamires",
   padrinho: "Leonardo",
   whatsapp: "5514981087903",      // DDI + DDD + número, só dígitos
-  dataHora: "2026-10-11T09:00:00-03:00"
+  dataHora: "2026-10-11T09:00:00-03:00",
+
+  /* Mural de recados — copie a linha de exemplo, troque nome e texto.
+     Cada recado entre chaves { }, separados por vírgula.
+     Enquanto a lista estiver vazia, o mural fica escondido. */
+  recados: [
+    // { nome: "Vovó Maria", texto: "Que Deus te abençoe sempre, minha netinha!" },
+    { nome: "Família Barbosa", texto: "Que o Papai do Céu e Nossa Senhora cubram você sempre com o manto sagrado, iluminando sua vida e seus caminhos. É uma honra imensa cuidar de você espiritualmente. Conte comigo para tudo, hoje e sempre!" },
+    { nome: "Rodrigo e Rosana", texto: "Laurinha, você recebe uma das mais lindas bênçãos de Deus: o Santo Batismo. 🙏🤍 Que o Espírito Santo habite sempre em seu coração, ilumine seus caminhos e te conduza por uma vida repleta de amor, fé e esperança. Que Deus te proteja em cada passo, que Nossa Senhora te cubra com seu manto e que nunca te faltem pessoas para te amar, cuidar e ensinar o caminho do Senhor. Que sua vida seja sempre um testemunho da presença e do amor de Deus. Que Ele te abençoe hoje e por toda a eternidade. ✨🕊️" },
+    { nome: "João Gabriel Zacarias", texto: "Laurinha, que Deus te abençoe hoje e sempre!!\nEsse dia vai ser muito especial para você, estou muito feliz de fazer parte disso!\nBeijaaaao" },
+    { nome: "Vovó Raquel e Armando", texto: "Que bênção, ter a Laura, na nossa família que emoção alegria poder estar presente nesse dia especial 🙏🏻 que nossa senhora cubra com seu manto sempre que anjo da guarda te protegerá que Deus abençoe, meu amor 💘 beijos com carinho sua vovó Raquel 🥂😍🌻🦋" },
+    { nome: "Vovó Viviane e Vovô Silvinho", texto: "Nossa amada neta Laura,\nQue a água do Batismo purifique todos os seus caminhos. Que o óleo te fortaleça, que a luz Divina permaneça no seu coração eternamente. Te amamos muito. Vovó e vovô." },
+    { nome: "Hélen e Kennedy", texto: "Que alegria fazer parte desse momento!\nQue Nossa Senhora cubra de bençãos nossa bonequinha. Que Jesus seja sempre o pilar dessa família! ❤️🙏🏻" },
+    { nome: "Ana Beatriz Gonzalez", texto: "Querida, Laura!\nMuito lindo e emocionante ver você crescer e se tornar uma menina sorridente! 🩷\nQue o anjo da guarda sempre ilumine seus passos e que nossa senhora te cubra com muitas bencões!\nCom carinho, Ana e Rafa" },
+    { nome: "Denise, Rafael e Bia", texto: "Que nossa mãe Aparecida te cubra com seu manto sagrado! Para sua vida ser coberta de bênçãos! 😇🥰😘\nDenise, Rafael, Bia!!" },
+  ]
 };
 /* ========================================= */
 
@@ -478,6 +520,47 @@ const esc = x => String(x ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;
     if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "Confirmar?"; setTimeout(() => { b.classList.remove("arm"); b.textContent = "Remover"; }, 4000); return; }
     rows = rows.filter(r => r.id !== b.dataset.id); save(rows); render();
   });
+})();
+
+/* ===== Música de fundo =====
+   Coloque o arquivo "musica.mp3" na mesma pasta do index.html.
+   Os navegadores só deixam tocar som depois do primeiro toque na página,
+   então a música começa no primeiro toque/clique em qualquer lugar. */
+(() => {
+  const a = $("bgm"), b = $("musicBtn");
+  a.volume = 0.45;
+  let userPaused = false;
+  const sync = () => b.classList.toggle("playing", !a.paused);
+  a.addEventListener("canplay", () => { b.hidden = false; }, {once:true});
+  a.addEventListener("error", () => { b.hidden = true; });
+  a.addEventListener("play", sync); a.addEventListener("pause", sync);
+  let armed = true;
+  const start = e => {
+    if (!armed || (e.target.closest && e.target.closest("#musicBtn"))) return;
+    armed = false;
+    if (!userPaused && a.paused) a.play().catch(() => {});
+  };
+  ["pointerdown","keydown"].forEach(ev => document.addEventListener(ev, start, {passive:true}));
+  a.play().catch(() => {});
+  b.addEventListener("click", e => {
+    e.stopPropagation();
+    if (a.paused) { userPaused = false; a.play().catch(() => {}); } else { userPaused = true; a.pause(); }
+  });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) a.pause(); else if (!userPaused) a.play().catch(() => {}); });
+})();
+
+/* Mural de recados */
+(() => {
+  const list = (CONVITE.recados || []).filter(r => r && r.texto);
+  if (!list.length) return;
+  const box = $("mural-list");
+  list.forEach(r => {
+    const c = document.createElement("figure"); c.className = "recado-card"; c.style.margin = "0";
+    const t = document.createElement("p"); t.textContent = r.texto;
+    const n = document.createElement("span"); n.textContent = r.nome || "";
+    c.append(t, n); box.append(c);
+  });
+  $("mural").hidden = false;
 })();
 </script>
 </body>
