@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Convite para o batizado da Laura – 11/10/2026, 9h, Igreja de Santa Luzia, Bariri-SP">
 <meta property="og:title" content="Batizado da Laura · 11 de outubro">
@@ -410,6 +413,20 @@ $("sign").textContent = CONVITE.pais;
 document.querySelectorAll(".babyFirst").forEach(e => e.textContent = first);
 $("wa-num").textContent = "+" + CONVITE.whatsapp.replace(/^(\d{2})(\d{2})(\d{4,5})(\d{4})$/, "$1 ($2) $3-$4");
 
+/* Mural de recados */
+try { (() => {
+  const list = (CONVITE.recados || []).filter(r => r && r.texto);
+  if (!list.length) return;
+  const box = $("mural-list");
+  list.forEach(r => {
+    const c = document.createElement("figure"); c.className = "recado-card"; c.style.margin = "0";
+    const t = document.createElement("p"); t.textContent = r.texto;
+    const n = document.createElement("span"); n.textContent = r.nome || "";
+    c.append(t, n); box.append(c);
+  });
+  $("mural").hidden = false;
+})(); } catch (e) { console.error("mural", e); }
+
 /* Contagem regressiva */
 const target = new Date(CONVITE.dataHora).getTime();
 function tick(){
@@ -554,19 +571,7 @@ const esc = x => String(x ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;
   document.addEventListener("visibilitychange", () => { if (document.hidden) a.pause(); else if (!userPaused) a.play().catch(() => {}); });
 })();
 
-/* Mural de recados */
-(() => {
-  const list = (CONVITE.recados || []).filter(r => r && r.texto);
-  if (!list.length) return;
-  const box = $("mural-list");
-  list.forEach(r => {
-    const c = document.createElement("figure"); c.className = "recado-card"; c.style.margin = "0";
-    const t = document.createElement("p"); t.textContent = r.texto;
-    const n = document.createElement("span"); n.textContent = r.nome || "";
-    c.append(t, n); box.append(c);
-  });
-  $("mural").hidden = false;
-})();
+
 </script>
 </body>
 </html>
